@@ -11,9 +11,8 @@
 > Generation (RAG)**, so every answer is grounded in real source documents,
 > not model hallucinations.
 
-🎨 **Live Demo**: [insert Streamlit Cloud link here after deploy]
+🎨 **Live Demo**: ![Demo Ask Difa](assets/demo.gif)
 
-![Demo Ask Difa](assets/demo.gif)
 
 ## ✨ Features
 
