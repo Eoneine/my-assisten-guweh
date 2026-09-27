@@ -13,7 +13,7 @@
 
 🎨 **Live Demo**: [insert Streamlit Cloud link here after deploy]
 
----
+![Demo Ask Difa](assets/demo.gif)
 
 ## ✨ Features
 
