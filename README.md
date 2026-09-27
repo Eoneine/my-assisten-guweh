@@ -11,8 +11,8 @@
 > Generation (RAG)**, so every answer is grounded in real source documents,
 > not model hallucinations.
 
-🎨 **Live Demo**: ![Demo Ask Difa](assets/demo.gif)
-
+🎨 **Live Demo**
+![Demo Ask Difa](assets/demo.gif)
 
 ## ✨ Features
 
