@@ -1,6 +1,7 @@
+toml
 [theme]
 primaryColor = "#4F46E5"
-backgroundColor = "#FFFFFF"
-secondaryBackgroundColor = "#F5F5F7"
-textColor = "#1A1A1A"
+backgroundColor = "#EEF1FF"
+secondaryBackgroundColor = "#F6F4FF"
+textColor = "#12142B"
 font = "sans serif"

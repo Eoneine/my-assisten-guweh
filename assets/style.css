@@ -1,23 +1,274 @@
-/* Bubble chat milik user: rata kanan secara visual, warna aksen */
-[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
-    background-color: #EEF2FF;
-    border-radius: 14px 14px 2px 14px;
-    border: none;
+/* =====================================================================
+   GLASSMORPHISM • MODERN PROFESSIONAL THEME
+   All visual styling only — no app logic touched.
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* ---------- Design tokens ---------- */
+:root {
+    --font-head: 'Sora', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+
+    --accent: #4f46e5;
+    --accent-2: #7c3aed;
+    --accent-3: #0ea5e9;
+
+    --ink: #12142b;
+    --ink-soft: #4a4f6b;
+
+    --glass-bg: rgba(255, 255, 255, 0.55);
+    --glass-bg-strong: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.65);
+    --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.12);
+    --glass-blur: 18px;
 }
 
-/* Bubble chat milik assistant: netral, ekor ke sisi kiri */
-[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
-    background-color: #F7F7F8;
-    border-radius: 14px 14px 14px 2px;
-    border: none;
+/* ---------- Global font ---------- */
+html, body, [class*="css"],
+.stApp, .stMarkdown, p, span, div, label, input, textarea, button {
+    font-family: var(--font-body);
 }
 
-/* Kotak input pertanyaan */
-[data-testid="stChatInput"] {
-    border-radius: 12px;
+h1, h2, h3, h4, .stHeading {
+    font-family: var(--font-head) !important;
+    letter-spacing: -0.02em;
 }
 
-/* Judul halaman */
+/* ---------- Aurora gradient background ---------- */
+.stApp {
+    background:
+        radial-gradient(1200px 600px at 12% -10%, rgba(124, 58, 237, 0.18), transparent 60%),
+        radial-gradient(1000px 560px at 100% 0%, rgba(14, 165, 233, 0.16), transparent 55%),
+        radial-gradient(900px 700px at 50% 120%, rgba(79, 70, 229, 0.14), transparent 60%),
+        linear-gradient(160deg, #eef1ff 0%, #f6f4ff 45%, #eefaff 100%);
+    background-attachment: fixed;
+}
+
+/* floating aurora blobs for futuristic depth */
+.stApp::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(320px 320px at 20% 30%, rgba(124, 58, 237, 0.22), transparent 70%),
+        radial-gradient(300px 300px at 80% 65%, rgba(14, 165, 233, 0.20), transparent 70%);
+    filter: blur(30px);
+    animation: floatBlobs 16s ease-in-out infinite alternate;
+}
+
+@keyframes floatBlobs {
+    0%   { transform: translate3d(0, 0, 0) scale(1); }
+    50%  { transform: translate3d(2%, -3%, 0) scale(1.06); }
+    100% { transform: translate3d(-2%, 3%, 0) scale(1.02); }
+}
+
+/* keep content above the blob layer */
+.stApp > *, section[data-testid="stSidebar"] { position: relative; z-index: 1; }
+
+/* Hide default Streamlit top decoration bar for a cleaner look */
+[data-testid="stDecoration"] { display: none; }
+[data-testid="stHeader"] { background: transparent; }
+
+/* ---------- Main container spacing ---------- */
+.block-container {
+    padding-top: 3.2rem;
+    max-width: 900px;
+}
+
+/* ---------- Title: gradient text ---------- */
+h1, h1 span, h1 div, [data-testid="stHeading"] h1 {
+    font-weight: 800 !important;
+    letter-spacing: -0.02em;
+}
 h1 {
-    font-weight: 600;
+    font-size: 2.6rem !important;
+    margin-bottom: 0.15rem !important;
+    background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 50%, var(--accent-3) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
 }
+h1 a, h1 span, h1 div {
+    background: inherit;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent !important;
+}
+
+/* subtitle caption */
+[data-testid="stCaptionContainer"] p,
+.stCaption, div[data-testid="stCaptionContainer"] {
+    color: var(--ink-soft) !important;
+    font-size: 0.95rem;
+}
+
+/* ---------- Sidebar as frosted glass panel ---------- */
+section[data-testid="stSidebar"] {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    border-right: 1px solid var(--glass-border);
+    box-shadow: 6px 0 32px rgba(31, 38, 135, 0.08);
+}
+
+section[data-testid="stSidebar"] .stHeading h2,
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2 {
+    font-family: var(--font-head) !important;
+    font-weight: 700 !important;
+    color: var(--ink) !important;
+}
+
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span {
+    color: var(--ink-soft);
+    line-height: 1.6;
+}
+
+/* sidebar links */
+section[data-testid="stSidebar"] a {
+    color: var(--accent) !important;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease, opacity 0.2s ease;
+}
+section[data-testid="stSidebar"] a:hover { opacity: 0.75; }
+
+/* divider */
+hr, [data-testid="stSidebar"] hr {
+    border-color: rgba(79, 70, 229, 0.18) !important;
+}
+
+/* ---------- Chat message bubbles: glass ---------- */
+[data-testid="stChatMessage"] {
+    background: var(--glass-bg);
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 18px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.85rem;
+    animation: bubbleIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes bubbleIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* user bubble: accent tinted glass */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]),
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.14), rgba(124, 58, 237, 0.10));
+    border: 1px solid rgba(124, 58, 237, 0.28);
+    border-radius: 18px 18px 4px 18px;
+}
+
+/* assistant bubble: neutral glass */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]),
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px 18px 18px 4px;
+}
+
+[data-testid="stChatMessage"] p { color: var(--ink); line-height: 1.65; }
+
+/* avatar polish */
+[data-testid="stChatMessage"] img,
+[data-testid="stChatMessageAvatarAssistant"] img {
+    border-radius: 50%;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+/* ---------- Chat input: floating glass bar ---------- */
+[data-testid="stChatInput"] {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    border: 1px solid var(--glass-border);
+    border-radius: 18px;
+    box-shadow: var(--glass-shadow);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+[data-testid="stChatInput"]:focus-within {
+    border-color: rgba(79, 70, 229, 0.55);
+    box-shadow: 0 8px 32px rgba(79, 70, 229, 0.22);
+}
+[data-testid="stChatInput"] textarea {
+    background: transparent !important;
+    color: var(--ink) !important;
+}
+[data-testid="stChatInput"] textarea::placeholder { color: #9aa0bd !important; }
+
+/* the bottom container of chat input transparent */
+[data-testid="stBottomBlockContainer"],
+[data-testid="stBottom"] > div {
+    background: transparent !important;
+}
+
+/* send button */
+[data-testid="stChatInputSubmitButton"] {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    transition: transform 0.18s ease, filter 0.18s ease;
+}
+[data-testid="stChatInputSubmitButton"]:hover {
+    transform: translateY(-1px) scale(1.05);
+    filter: brightness(1.08);
+}
+[data-testid="stChatInputSubmitButton"] svg { fill: #fff !important; color: #fff !important; }
+
+/* ---------- Buttons (e.g. Start new conversation) ---------- */
+.stButton > button {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    padding: 0.55rem 1rem;
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+.stButton > button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    box-shadow: 0 10px 26px rgba(79, 70, 229, 0.45);
+    color: #fff;
+}
+.stButton > button:active { transform: translateY(0); }
+.stButton > button p,
+.stButton > button span,
+.stButton > button div,
+.stButton > button:hover p,
+.stButton > button:hover span {
+    color: #fff !important;
+    font-weight: 600 !important;
+}
+
+/* ---------- Spinner / status accent ---------- */
+.stSpinner > div { border-top-color: var(--accent) !important; }
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--accent), var(--accent-2));
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { filter: brightness(1.1); }
+
+/* text selection */
+::selection { background: rgba(124, 58, 237, 0.25); }
