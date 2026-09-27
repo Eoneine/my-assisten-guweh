@@ -1,0 +1,23 @@
+/* Bubble chat milik user: rata kanan secara visual, warna aksen */
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-user"]) {
+    background-color: #EEF2FF;
+    border-radius: 14px 14px 2px 14px;
+    border: none;
+}
+
+/* Bubble chat milik assistant: netral, ekor ke sisi kiri */
+[data-testid="stChatMessage"]:has([data-testid="chatAvatarIcon-assistant"]) {
+    background-color: #F7F7F8;
+    border-radius: 14px 14px 14px 2px;
+    border: none;
+}
+
+/* Kotak input pertanyaan */
+[data-testid="stChatInput"] {
+    border-radius: 12px;
+}
+
+/* Judul halaman */
+h1 {
+    font-weight: 600;
+}
