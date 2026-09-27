@@ -78,7 +78,7 @@ h1, h2, h3, h4, .stHeading {
     max-width: 900px;
 }
 
-/* ---------- Title: gradient text ---------- */
+/* ---------- Title: gradient text (animated shimmer) ---------- */
 h1, h1 span, h1 div, [data-testid="stHeading"] h1 {
     font-weight: 800 !important;
     letter-spacing: -0.02em;
@@ -86,18 +86,27 @@ h1, h1 span, h1 div, [data-testid="stHeading"] h1 {
 h1 {
     font-size: 2.6rem !important;
     margin-bottom: 0.15rem !important;
-    background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 50%, var(--accent-3) 100%);
+    background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 25%, var(--accent-3) 50%, var(--accent-2) 75%, var(--accent) 100%);
+    background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent;
+    animation: titleShimmer 6s linear infinite;
 }
 h1 a, h1 span, h1 div {
     background: inherit;
+    background-size: inherit;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: transparent !important;
+    animation: inherit;
+}
+
+@keyframes titleShimmer {
+    from { background-position: 0% center; }
+    to   { background-position: 200% center; }
 }
 
 /* subtitle caption */
@@ -155,6 +164,11 @@ hr, [data-testid="stSidebar"] hr {
     padding: 0.9rem 1.1rem;
     margin-bottom: 0.85rem;
     animation: bubbleIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+[data-testid="stChatMessage"]:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 40px rgba(31, 38, 135, 0.18);
 }
 
 @keyframes bubbleIn {
@@ -180,12 +194,38 @@ hr, [data-testid="stSidebar"] hr {
 
 [data-testid="stChatMessage"] p { color: var(--ink); line-height: 1.65; }
 
-/* avatar polish */
+/* avatar polish + pulsing glow ring (assistant looks "online") */
 [data-testid="stChatMessage"] img,
-[data-testid="stChatMessageAvatarAssistant"] img {
+[data-testid="stChatMessageAvatarAssistant"] img,
+[data-testid="stChatMessageAvatarCustom"] img {
     border-radius: 50%;
     box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
     border: 2px solid rgba(255, 255, 255, 0.8);
+}
+[data-testid="stChatMessageAvatarAssistant"],
+[data-testid="stChatMessageAvatarCustom"],
+[data-testid="stChatMessageAvatarUser"] {
+    position: relative;
+    animation: avatarPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+[data-testid="stChatMessageAvatarAssistant"]::after,
+[data-testid="stChatMessageAvatarCustom"]::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px solid rgba(79, 70, 229, 0.55);
+    animation: pulseRing 2.2s ease-out infinite;
+    pointer-events: none;
+}
+@keyframes avatarPop {
+    0%   { transform: scale(0.4); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+@keyframes pulseRing {
+    0%   { transform: scale(1); opacity: 0.8; }
+    70%  { transform: scale(1.45); opacity: 0; }
+    100% { transform: scale(1.45); opacity: 0; }
 }
 
 /* ---------- Chat input: floating glass bar ---------- */
@@ -272,3 +312,120 @@ hr, [data-testid="stSidebar"] hr {
 
 /* text selection */
 ::selection { background: rgba(124, 58, 237, 0.25); }
+
+/* =====================================================================
+   EXTRA ANIMATIONS & DECORATIONS
+   ===================================================================== */
+
+/* ---------- Floating star particles (subtle, behind content) ---------- */
+.stApp::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+        radial-gradient(2px 2px at 15% 25%, rgba(124, 58, 237, 0.5), transparent 60%),
+        radial-gradient(2px 2px at 35% 70%, rgba(14, 165, 233, 0.45), transparent 60%),
+        radial-gradient(1.5px 1.5px at 55% 20%, rgba(79, 70, 229, 0.5), transparent 60%),
+        radial-gradient(2px 2px at 70% 55%, rgba(124, 58, 237, 0.4), transparent 60%),
+        radial-gradient(1.5px 1.5px at 85% 30%, rgba(14, 165, 233, 0.45), transparent 60%),
+        radial-gradient(2px 2px at 25% 85%, rgba(79, 70, 229, 0.35), transparent 60%),
+        radial-gradient(1.5px 1.5px at 90% 80%, rgba(124, 58, 237, 0.4), transparent 60%);
+    animation: twinkleStars 7s ease-in-out infinite alternate;
+}
+
+@keyframes twinkleStars {
+    0%   { opacity: 0.35; transform: translateY(0); }
+    50%  { opacity: 0.9;  transform: translateY(-6px); }
+    100% { opacity: 0.5;  transform: translateY(3px); }
+}
+
+/* ---------- Sidebar heading: animated gradient underline ---------- */
+section[data-testid="stSidebar"] h1::after,
+section[data-testid="stSidebar"] h2::after,
+section[data-testid="stSidebar"] .stHeading h2::after {
+    content: "";
+    display: block;
+    width: 56px;
+    height: 4px;
+    margin-top: 6px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+    background-size: 200% auto;
+    animation: titleShimmer 4s linear infinite;
+}
+
+/* ---------- Buttons: shine sweep on hover ---------- */
+.stButton > button {
+    position: relative;
+    overflow: hidden;
+}
+.stButton > button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 55%;
+    height: 100%;
+    background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    transform: skewX(-20deg);
+    transition: none;
+    pointer-events: none;
+}
+.stButton > button:hover::after {
+    animation: shineSweep 0.8s ease;
+}
+
+@keyframes shineSweep {
+    from { left: -80%; }
+    to   { left: 130%; }
+}
+
+/* ---------- Chat input: gentle idle breathing glow ---------- */
+[data-testid="stChatInput"] {
+    animation: inputBreathe 5s ease-in-out infinite;
+}
+@keyframes inputBreathe {
+    0%, 100% { box-shadow: var(--glass-shadow); }
+    50%      { box-shadow: 0 8px 36px rgba(79, 70, 229, 0.28); }
+}
+
+/* ---------- Sidebar links: underline slide-in on hover ---------- */
+section[data-testid="stSidebar"] a {
+    position: relative;
+    padding-bottom: 2px;
+}
+section[data-testid="stSidebar"] a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 0.3s ease;
+}
+section[data-testid="stSidebar"] a:hover::after { width: 100%; }
+
+/* ---------- Staggered entrance for first chat bubbles ---------- */
+[data-testid="stVerticalBlock"] > div:nth-of-type(1) [data-testid="stChatMessage"] { animation-delay: 0.05s; }
+[data-testid="stVerticalBlock"] > div:nth-of-type(2) [data-testid="stChatMessage"] { animation-delay: 0.15s; }
+[data-testid="stVerticalBlock"] > div:nth-of-type(3) [data-testid="stChatMessage"] { animation-delay: 0.25s; }
+[data-testid="stVerticalBlock"] > div:nth-of-type(4) [data-testid="stChatMessage"] { animation-delay: 0.35s; }
+
+/* ---------- Spinner: rotating accent ring ---------- */
+.stSpinner > div {
+    animation-duration: 0.7s !important;
+    box-shadow: 0 0 12px rgba(79, 70, 229, 0.45);
+}
+
+/* ---------- Respect reduced-motion preferences ---------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
